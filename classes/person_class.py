@@ -1,4 +1,3 @@
-# import random
 from .casino import *
 from .card import *
 
@@ -8,8 +7,7 @@ class SharedAttr:
         self.name = name
         self.hand_list = [[], [], [], []]
         self.total_list = [[], [], [], []]
-        self.credit_card = 3000
-        self.cash = 1000
+        self.cash = 1_000_000
         self.bet_list = [[], [], [], []]
         self.ace_split = 1
         self.card_split = 3
@@ -21,6 +19,9 @@ class SharedAttr:
         return self.name
 
     def bet(self):
+        """
+        Returns random bet in the range of 2-100
+        """
         return self.bet_list[0].append(random.randint(2, 100))
 
     def __len__(self):
@@ -31,10 +32,10 @@ class SharedAttr:
         return quit()
 
 
-class Player(SharedAttr):
-    PLAYERS = 1
-    player_list = []
-    player_counter = 0
+class NPC(SharedAttr):
+    NPC = 1
+    NPC_list = []
+    NPC_counter = 0
 
     def __getitem__(self, item):
         if item < 0 or item > 4:
@@ -42,11 +43,14 @@ class Player(SharedAttr):
         return self.hand_list[item]
 
     @staticmethod
-    def gen_person():
-        for i in range(Player.PLAYERS):
-            Player.player_counter += 1
-            name = f'Player {Player.player_counter}'
-            Player.player_list.append(Player(name))
+    def gen_npc():
+        """
+        Returns the required number of NPCs
+        """
+        for i in range(NPC.NPC):
+            NPC.NPC_counter += 1
+            name = f'NPC {NPC.NPC_counter}'
+            NPC.NPC_list.append(NPC(name))
         return
 
 
@@ -56,7 +60,7 @@ class Dealer(SharedAttr):
     dealer_counter = 0
 
     @staticmethod
-    def gen_person():
+    def gen_dealer():
         for i in range(Dealer.DEALERS):
             Dealer.dealer_counter += 1
             name = f'Dealer {Dealer.dealer_counter}'

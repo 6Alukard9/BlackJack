@@ -2,15 +2,12 @@ from .person_class import *
 from .table_class import *
 
 
-# DECK = [
-#     "a♥", "2♥", "3♥", "4♥", "5♥", "6♥", "7♥", "8♥", "9♥", "10♥", "j♥", "q♥", "k♥",
-#     "a♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "j♦", "q♦", "k♦",
-#     "a♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "j♠", "q♠", "k♠",
-#     "a♣", "2♣", "3♣", "4♣", "5♣", "6♣", "7♣", "8♣", "9♣", "10♣", "j♣", "q♣", "k♣"
-# ]
-
-DECK = ["3♠", "3♦", "3♥", "3♣", "3♠", "3♦", "3♥", "3♣", "3♠", "3♦", "3♥", "3♣", "3♠", "3♦", "3♥", "3♣",
-        "3♠", "3♦", "3♥", "3♣", "3♠", "3♦", "3♥", "3♣", "3♠", "3♦", "3♥", "3♣", "3♠", "3♦", "3♥", "3♣"]
+DECK = [
+    "a♥", "2♥", "3♥", "4♥", "5♥", "6♥", "7♥", "8♥", "9♥", "10♥", "j♥", "q♥", "k♥",
+    "a♦", "2♦", "3♦", "4♦", "5♦", "6♦", "7♦", "8♦", "9♦", "10♦", "j♦", "q♦", "k♦",
+    "a♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "j♠", "q♠", "k♠",
+    "a♣", "2♣", "3♣", "4♣", "5♣", "6♣", "7♣", "8♣", "9♣", "10♣", "j♣", "q♣", "k♣"
+]
 
 
 class Card:
@@ -23,21 +20,14 @@ class Card:
     def __str__(self):
         return self.name
 
-    def __eq__(self, other):
-        if other is None or not isinstance(other, Card):
-            return False
-        return self.name[:-1] == other.name[:-1]
-
-    def __add__(self, other):
-        if other is None or not isinstance(other, Card):
-            return False
-        return self.value + other.value
-
     def __getitem__(self, item):
-        return self.name[:-1]
+        return self.name
 
     @staticmethod
     def set_value():
+        """
+        It creates cards and set their value
+        """
         for card in DECK:
             if card[:-1] == 'a':
                 name = f'{card}'

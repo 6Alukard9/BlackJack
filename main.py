@@ -3,8 +3,8 @@ from classes.person_class import *
 
 
 def main():
-    Player.gen_person()
-    Dealer.gen_person()
+    NPC.gen_npc()
+    Dealer.gen_dealer()
     Table.set_table()
     Dealer.imitate_shift()
     Card.set_value()
@@ -21,7 +21,7 @@ def main():
         table.double_down()
         for player in table:
             for cards in player.hand_list:
-                print(player.name, player.bet_list, [e.name for e in cards])
+                print(player.name, player.bet_list, [e.name for e in cards], sum([e.value for e in cards]))
 
 
 if __name__ == '__main__':
