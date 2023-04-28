@@ -1,6 +1,5 @@
-from classes.table_classes import *
-from classes.person_classes import *
-# from classes.card import *
+from classes.table_class import *
+from classes.person_class import *
 
 
 def main():

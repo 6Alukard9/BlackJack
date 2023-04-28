@@ -1,7 +1,8 @@
 import random
-from classes.person_classes import *
-from classes.casino import *
-from classes.card import *
+from .person_class import *
+from .casino import *
+from .card import *
+
 TABLES = 1
 
 

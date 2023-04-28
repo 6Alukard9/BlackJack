@@ -1,6 +1,6 @@
-import random
-from classes.casino import *
-from classes.card import *
+# import random
+from .casino import *
+from .card import *
 
 
 class SharedAttr:

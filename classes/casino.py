@@ -1,4 +1,3 @@
-from classes.person_classes import *
 
 
 class Casino:

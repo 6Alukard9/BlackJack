@@ -1,5 +1,6 @@
-from classes.person_classes import *
-from classes.table_classes import *
+from .person_class import *
+from .table_class import *
+
 
 # DECK = [
 #     "a♥", "2♥", "3♥", "4♥", "5♥", "6♥", "7♥", "8♥", "9♥", "10♥", "j♥", "q♥", "k♥",
