@@ -17,11 +17,14 @@ def main():
         for player in table.sitting[1:]:
             player.bet()
     for table in Table.table_list:
-        table.split()
-        table.double_down()
-        for player in table:
+        table_index = Table.table_list.index(table)
+        for player in table.sitting[1:]:
+            player.split(table_index)
+            player.double_down()
             for cards in player.hand_list:
-                print(player.name, player.bet_list, [e.name for e in cards], sum([e.value for e in cards]))
+                print([e.name for e in cards])
+                # for card in cards:
+                #     print(card.name, card.value, f'{id(card): ,}')
 
 
 if __name__ == '__main__':
