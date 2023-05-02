@@ -17,9 +17,9 @@ def main():
         for player in table.sitting[1:]:
             player.bet()
     for table in Table.table_list:
-        table_index = Table.table_list.index(table)
+        table_name = Table.table_list.index(table.name)
         for player in table.sitting[1:]:
-            player.split(table_index)
+            player.split(table_name)
             player.double_down()
             for cards in player.hand_list:
                 print([e.name for e in cards])

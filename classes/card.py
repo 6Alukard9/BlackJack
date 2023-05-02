@@ -1,5 +1,5 @@
-from .person_class import *
-from .table_class import *
+# from .person_class import *
+# from .table_class import *
 
 DECK = ["5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥",
         "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥", "5♥",

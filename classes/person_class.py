@@ -1,5 +1,5 @@
 from .casino import *
-from .card import *
+# from .card import *
 from .table_class import *
 
 
@@ -29,7 +29,7 @@ class SharedAttr:
     def __len__(self):
         return len(self.hand_list)
 
-    def split(self, table_index):
+    def split(self, table_name):
         """
         After getting 2 cards as initial hand, each player and NPC can separate their cards if cards are equal
         """
@@ -40,11 +40,12 @@ class SharedAttr:
                     self.hand_list[3 - self.card_split].pop(1)
                     bet = list(self.bet_list[0])
                     self.bet_list[3 - (self.card_split - 1)] = bet
-                    if 'card' not in (Table.table_list[table_index].shoe[0], Table.table_list[table_index].shoe[1]):
-                        self.hand_list[3 - self.card_split].append(table_index[0])
-                        self.hand_list[3 - (self.card_split - 1)].append(table_index[1])
-                        Table.table_list[table_index].shoe.pop(0)
-                        Table.table_list[table_index].shoe.pop(1)
+                    table_name = Table.table_list.index(table_name)
+                    if 'card' not in (Table.table_list[table_name].shoe[0], Table.table_list[table_name].shoe[1]):
+                        self.hand_list[3 - self.card_split].append(table_name[0])
+                        self.hand_list[3 - (self.card_split - 1)].append(table_name[1])
+                        Table.table_list[table_name].shoe.pop(0)
+                        Table.table_list[table_name].shoe.pop(1)
                         if self.hand_list[3 - self.card_split][0][:-1] != 'a':
                             self.card_split -= 1
                             continue
@@ -52,8 +53,8 @@ class SharedAttr:
                             self.ace_split -= 1
                             break
                     else:
-                        temp_value = Table.table_list[table_index].shoe.index('card')
-                        Table.table_list[table_index].shoe.pop(temp_value)
+                        temp_value = Table.table_list[table_name].shoe.index('card')
+                        Table.table_list[table_name].shoe.pop(temp_value)
                         continue
                 break
 
