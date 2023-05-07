@@ -19,6 +19,8 @@ class Table:
         self.time_change = time_change
         self.sitting = []
         self.shoe = []
+        self.temp_shoe = self.gen_shoe_iterator()
+        self.stop_card_found = False
 
     def __str__(self):
         return self.name
@@ -35,19 +37,14 @@ class Table:
         """
         Takes first or new dealer when needed
         """
-        if self.sitting:
-            curr_dealer = self.sitting[0].name
-            self.sitting[0].playing = False
-            Casino.shift.pop(Casino.occupied_dealers(curr_dealer))
-            self.sitting.pop(0)
-        else:
-            dealer = random.choice(Casino.shift)
-            self.sitting.append(dealer)
-            Casino.occupied_dealers.append(dealer)
-            dealer.playing = True
-            Casino.shift.pop(Casino.shift.index(dealer))
 
-    def imitate_player(self):
+        dealer = random.choice(Casino.shift)
+        self.sitting.append(dealer)
+        Casino.occupied_dealers.append(dealer)
+        dealer.playing = True
+        Casino.shift.pop(Casino.shift.index(dealer))
+
+    def take_npc(self):
         """
         Adds NPCs to a table
         """
@@ -58,6 +55,13 @@ class Table:
             if self.max_players > len(self.sitting):
                 self.sitting.append(npc)
                 npc.playing = True
+
+    def bet(self):
+        """
+        Returns random bet in the range of 2-100
+        """
+        for player in self.sitting[1:]:
+            player.bet_list[0].append(random.randint(2, 100))
 
     @staticmethod
     def set_table():
@@ -74,7 +78,8 @@ class Table:
         """
         Shuffles cards when needed
         """
-        for _ in range(50):
+
+        for _ in range(20):
             random.shuffle(self.shoe)
 
     def stop_card(self):
@@ -90,66 +95,73 @@ class Table:
         for card in Card.card_list:
             self.shoe.append(card)
         self.shoe *= 6
+
+    def gen_shoe_iterator(self):
+        if 'card' in self.shoe:
+            self.shoe.remove('card')
         self.shuffle_cards()
         self.stop_card()
+
+        for card in self.shoe:
+            yield card
 
     def initial_hand(self):
         """
         Each player, NPC and dealer gets 2 cards
         """
+
         for _ in range(2):
             for player in self.sitting:
-                if self.shoe[0] != 'card':
-                    player.hand_list[0].append(self.shoe[0])
-                    self.shoe.pop(0)
+                temp_value = next(self.temp_shoe)
+                if temp_value != 'card':
+                    player.hand_list[0].append(temp_value)
                 else:
-                    self.shoe.pop(0)
-                    player.hand_list[0].append(self.shoe[0])
-                    self.shoe.pop(0)
+                    self.stop_card_found = True
+                    player.hand_list[0].append(next(temp_value))
 
-    # def split(self):
-    #     """
-    #     After getting 2 cards as initial hand, each player and NPC can separate their cards if cards are equal
-    #     """
-    #     for player in self.sitting[1:]:
-    #         if player.hand_list[0][0] == player.hand_list[0][1]:
-    #             while True:
-    #                 if player.ace_split != 0 and player.card_split != 0:
-    #                     player.hand_list[3 - (player.card_split - 1)].append(player.hand_list[3 - player.card_split][1])
-    #                     player.hand_list[3 - player.card_split].pop(1)
-    #                     bet = list(player.bet_list[0])
-    #                     player.bet_list[3 - (player.card_split - 1)] = bet
-    #                     if 'card' not in (self.shoe[0], self.shoe[1]):
-    #                         player.hand_list[3 - player.card_split].append(self.shoe[0])
-    #                         player.hand_list[3 - (player.card_split - 1)].append(self.shoe[1])
-    #                         self.shoe.pop(0)
-    #                         self.shoe.pop(1)
-    #                         if player.hand_list[3 - player.card_split][0][:-1] != 'a':
-    #                             player.card_split -= 1
-    #                             continue
-    #                         else:
-    #                             player.ace_split -= 1
-    #                             break
-    #                     else:
-    #                         temp_value = self.shoe.index('card')
-    #                         self.shoe.pop(temp_value)
-    #                         continue
-    #                 break
-    #
-    # def double_down(self):
-    #     """
-    #     Each player and NPC can double their bet if the total of their cards is in the range of 9-11
-    #     """
-    #     for player in self.sitting[1:]:
-    #         i = 0
-    #         for hand in player.hand_list:
-    #             if hand:
-    #                 if sum(e.value for e in hand) in (9, 10, 11):
-    #                     player.bet_list[i][0] *= 2
-    #                     if i < 3:
-    #                         i += 1
-    #                     else:
-    #                         break
+    def split(self):
+        """
+        After getting 2 cards as initial hand, each player and NPC can separate their cards if cards are equal
+        """
+        for player in self.sitting[1:]:
+            for cards in player.hand_list:
+                if cards:
+                    if cards[0] == cards[1]:
+                        if player.ace_split != 0 and player.card_split != 0:
+                            player.hand_list[3 - (player.card_split - 1)].append(player.hand_list[3 - player.card_split][1])
+                            player.hand_list[3 - player.card_split].pop(1)
+                            bet = list(player.bet_list[0])
+                            player.bet_list[3 - (player.card_split - 1)] = bet
+                            if 'card' not in (self.shoe[0], self.shoe[1]):
+                                player.hand_list[3 - player.card_split].append(self.shoe[0])
+                                player.hand_list[3 - (player.card_split - 1)].append(self.shoe[1])
+                                self.shoe.pop(0)
+                                self.shoe.pop(1)
+                                if player.hand_list[3 - player.card_split][0][:-1] != 'a':
+                                    player.card_split -= 1
+                                else:
+                                    player.ace_split -= 1
+                                    break
+                            else:
+                                temp_value = self.shoe.index('card')
+                                self.shoe.pop(temp_value)
+                                continue
+                        break
+
+    def double_down(self):
+        """
+        Each player and NPC can double their bet if the total of their cards is in the range of 9-11
+        """
+        for player in self.sitting[1:]:
+            i = 0
+            for hand in player.hand_list:
+                if hand:
+                    if sum(e.value for e in hand) in (9, 10, 11):
+                        player.bet_list[i][0] *= 2
+                        if i < 3:
+                            i += 1
+                        else:
+                            break
 
 
 class Iterator:
