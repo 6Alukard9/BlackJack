@@ -117,36 +117,48 @@ class Table:
                     player.hand_list[0].append(temp_value)
                 else:
                     self.stop_card_found = True
-                    player.hand_list[0].append(next(temp_value))
+                    player.hand_list[0].append(next(self.temp_shoe))
 
     def split(self):
         """
         After getting 2 cards as initial hand, each player and NPC can separate their cards if cards are equal
         """
-        for player in self.sitting[1:]:
+        def grf():
+            count_hand = -1
             for cards in player.hand_list:
+                count_hand += 1
                 if cards:
                     if cards[0] == cards[1]:
                         if player.ace_split != 0 and player.card_split != 0:
-                            player.hand_list[3 - (player.card_split - 1)].append(player.hand_list[3 - player.card_split][1])
-                            player.hand_list[3 - player.card_split].pop(1)
-                            bet = list(player.bet_list[0])
+                            player.hand_list[3 - (player.card_split - 1)].append(player.hand_list[count_hand][1])
+                            player.hand_list[count_hand].pop(1)
+                            bet = player.bet_list[0]
                             player.bet_list[3 - (player.card_split - 1)] = bet
-                            if 'card' not in (self.shoe[0], self.shoe[1]):
-                                player.hand_list[3 - player.card_split].append(self.shoe[0])
-                                player.hand_list[3 - (player.card_split - 1)].append(self.shoe[1])
-                                self.shoe.pop(0)
-                                self.shoe.pop(1)
-                                if player.hand_list[3 - player.card_split][0][:-1] != 'a':
+
+                            temp_value = next(self.temp_shoe)
+                            temp_value2 = next(self.temp_shoe)
+                            if 'card' not in (temp_value, temp_value2):
+                                player.hand_list[count_hand].append(temp_value)
+                                player.hand_list[3 - (player.card_split - 1)].append(temp_value2)
+                                if player.hand_list[3 - (player.card_split - 1)][0][:-1] != 'a' \
+                                        and player.hand_list[count_hand][0][:-1]:
                                     player.card_split -= 1
                                 else:
                                     player.ace_split -= 1
                                     break
                             else:
-                                temp_value = self.shoe.index('card')
-                                self.shoe.pop(temp_value)
+                                if temp_value == 'card':
+                                    print('!!!!!!!!!!!!!!!!')
+                                    temp_value = next(self.temp_shoe)
+                                elif temp_value2:
+                                    print('AAAAAAAAAAAAAAAAA')
+                                    temp_value2 = next(self.temp_shoe)
                                 continue
-                        break
+
+                            break
+
+        for player in self.sitting[1:]:
+            grf()
 
     def double_down(self):
         """

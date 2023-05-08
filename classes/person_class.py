@@ -25,7 +25,7 @@ class SharedAttr:
 
 
 class NPC(SharedAttr):
-    NPC_amount = 3
+    NPC_amount = 5
     NPC_list = []
     NPC_counter = 0
 
