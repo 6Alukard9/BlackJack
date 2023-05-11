@@ -12,6 +12,14 @@ class Table:
     table_name = f'Table {table_counter + 1}'
 
     def __init__(self, name, max_players=6, min_bet=2, max_bet=100, time_change=60):
+        # Run validations to the received arguments
+        assert isinstance(name, str), f'Name {name} is not a str'
+        assert isinstance(min_bet, int), f'min_bet {min_bet} is not an int'
+        assert isinstance(max_bet, int), f'max_bet {max_bet} is not an int'
+        assert isinstance(max_players, int), f'max_players is not an int'
+        assert isinstance(time_change, int), f'time_change {time_change} is not an int'
+
+        # Assign to self object
         self.name = name
         self.max_players = max_players
         self.min_bet = min_bet
@@ -21,6 +29,9 @@ class Table:
         self.shoe = []
         self.temp_shoe = self.gen_shoe_iterator()
         self.stop_card_found = False
+
+        # Actions to execute
+        Table.table_list.append(self)
 
     def __str__(self):
         return self.name
@@ -66,13 +77,12 @@ class Table:
     @staticmethod
     def set_table():
         """
-        Creates the required number of tables
+        Creates the required number of tables.
+        Tables are added automatically to the list.
         """
         for _ in range(TABLES):
             Table.table_counter += 1
-            name = f'Table {Table.table_counter}'
-            Table.table_list.append(Table(name))
-        return
+            Table(f'Table {Table.table_counter}')
 
     def shuffle_cards(self):
         """

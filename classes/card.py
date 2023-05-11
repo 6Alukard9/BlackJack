@@ -10,8 +10,16 @@ class Card:
     card_list = []
 
     def __init__(self, name, value):
+        # Run validations to the received arguments
+        assert isinstance(name, str), f'Name {name} is not a str'
+        assert isinstance(value, int), f'Value {value} is not an int'
+
+        # Assign to self object
         self.name = name
         self.value = value
+
+        # Actions to execute
+        Card.card_list.append(self)
 
     def __str__(self):
         return self.name
@@ -27,16 +35,14 @@ class Card:
     @staticmethod
     def set_value():
         """
-        It creates cards and set their value
+        It creates cards and set their value.
+        Cards are added automatically to the list.
         """
         for card in DECK:
             if card[:-1] == 'a':
-                name = f'{card}'
-                Card.card_list.append(Card(name, 11))
+                Card(card, 11)
             elif card[:1] in ['k', 'q', 'j']:
-                name = card
-                Card.card_list.append(Card(name, 10))
+                Card(card, 10)
             else:
-                name = card
-                Card.card_list.append(Card(name, int(card[:-1])))
+                Card(card, int(card[:-1]))
 

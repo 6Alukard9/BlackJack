@@ -5,6 +5,10 @@ from .table_class import *
 
 class SharedAttr:
     def __init__(self, name):
+        # Run validations to the received arguments
+        assert isinstance(name, str), f'Name {name} is not a str'
+
+        # Assign to self object
         self.name = name
         self.hand_list = [[], [], [], []]
         self.total_list = [[], [], [], []]
@@ -25,7 +29,7 @@ class SharedAttr:
 
 
 class NPC(SharedAttr):
-    NPC_amount = 5
+    NPC_amount = 1
     NPC_list = []
     NPC_counter = 0
 
