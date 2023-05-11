@@ -38,8 +38,8 @@ class NPC(SharedAttr):
             return IndexError
         return self.hand_list[item]
 
-    @staticmethod
-    def gen_npc():
+    @classmethod
+    def gen_npc(cls):
         """
         Returns the required number of NPCs
         """
@@ -55,8 +55,8 @@ class Dealer(SharedAttr):
     dealer_list = []
     dealer_counter = 0
 
-    @staticmethod
-    def gen_dealer():
+    @classmethod
+    def gen_dealer(cls):
         for i in range(Dealer.DEALERS):
             Dealer.dealer_counter += 1
             name = f'Dealer {Dealer.dealer_counter}'

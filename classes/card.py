@@ -32,8 +32,8 @@ class Card:
             return False
         return self.value == other.value
 
-    @staticmethod
-    def set_value():
+    @classmethod
+    def set_value(cls):
         """
         It creates cards and set their value.
         Cards are added automatically to the list.

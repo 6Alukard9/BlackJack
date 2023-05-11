@@ -74,8 +74,8 @@ class Table:
         for player in self.sitting[1:]:
             player.bet_list[0].append(random.randint(2, 100))
 
-    @staticmethod
-    def set_table():
+    @classmethod
+    def set_table(cls):
         """
         Creates the required number of tables.
         Tables are added automatically to the list.
